@@ -1,5 +1,48 @@
-import streamlit as st
 import json
+import os
+import sys
+import inspect
+import streamlit as st
+import datetime
+
+ENGINE_MODEL_TYPE = "16k_zh"
+SLICE_SIZE = 6400
+
+
+currentdir = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
+
+TEXT = "欢迎使用腾讯云实时语音合成"
+VOICETYPE = 101001  # 音色类型
+CODEC = "pcm"  # 音频格式：pcm/mp3
+SAMPLE_RATE = 16000  # 音频采样率：8000/16000
+ENABLE_SUBTITLE = True
+
+
+if True:
+    from tts import synthesizer
+
+
+class Credential:
+    def __init__(self, secret_id, secret_key, token=""):
+        self.secret_id = secret_id
+        self.secret_key = secret_key
+        self.token = token
+
+
+class MySpeechSynthesisListener(synthesizer.SpeechSynthesisListener):
+
+    def on_message(self, response):
+        pass
+
+    def on_complete(self, response):
+        pass
+
+    def on_fail(self, response):
+        pass
 
 
 def validate_config(config):
@@ -42,6 +85,21 @@ def validate_config(config):
         except ValueError:
             errors.append("Volume 必须是整数")
 
+    listener = MySpeechSynthesisListener()
+    credential_var = Credential(config["SecretId"], config["SecretKey"])
+    _synthesizer = synthesizer.SpeechSynthesizer(
+        config["AppId"], credential_var, config["VoiceType"], listener)
+    _synthesizer.set_voice_type(config["VoiceType"])
+    _synthesizer.set_codec(CODEC)
+    _synthesizer.set_sample_rate(SAMPLE_RATE)
+
+    response = _synthesizer.synthesis(TEXT)
+    print(response)
+
+    if response:
+        errors.append("请求失败!， 错误码: " + response.get("Code") +
+                      "， 错误信息: " + response.get("Message"))
+
     return errors
 
 
@@ -51,7 +109,7 @@ tts_type = st.text_input("TTS类型", value="tencent")
 app_id = st.text_input("应用ID")
 secret_id = st.text_input("密钥ID")
 secret_key = st.text_input("密钥Key", type="password")
-voice_type = st.number_input("音色ID", min_value=0, step=1)
+voice_type = st.number_input("音色ID", value=101001)
 speed = st.slider("语速", min_value=-2.0, max_value=6.0, value=1.0, step=0.01)
 volume = st.slider("音量", min_value=0, max_value=10, value=5)
 primary_language = st.text_input("主要语言", value="zh-CN")

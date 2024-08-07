@@ -5,19 +5,22 @@ import requests
 
 
 def validate_config(config):
+
+    errors = []
+
     required_fields = ["LLMType", "Model", "APIKey",
                        "APIUrl", "Streaming", "SystemPrompt", "Timeout"]
     for field in required_fields:
         if field not in config:
-            return False, f"缺少必填字段: {field}"
+            errors.append(f"缺少必填字段: {field}")
 
     if not isinstance(config["Streaming"], bool):
-        return False, "Streaming 必须是布尔值 (true/false)"
+        errors.append("Streaming 必须是布尔值 (true/false)")
 
     try:
         float(config["Timeout"])
     except ValueError:
-        return False, "Timeout 必须是一个数字"
+        errors.append("Timeout 必须是一个数字")
 
     headers = {
         "Authorization": f"Bearer {config['APIKey']}",
@@ -33,9 +36,10 @@ def validate_config(config):
         config['APIUrl'], headers=headers, stream=config["Streaming"], json=data)
 
     if response.status_code != 200:
-        return False, f"请求失败: {response.text}"
+        errors.append(
+            f"请求失败: status_code={response.status_code} text={response.text}")
 
-    return True, "配置有效"
+    return errors
 
 
 st.title("LLMConfig 配置验证")
@@ -64,10 +68,10 @@ if st.button("验证配置"):
         }
     }
 
-    is_valid, message = validate_config(config["LLMConfig"])
+    errors = validate_config(config["LLMConfig"])
 
-    if is_valid:
-        st.success("配置有效!")
-        st.json(config)
+    if errors:
+        st.error(f"配置无效: {errors}")
     else:
-        st.error(f"配置无效: {message}")
+        st.success("配置有效")
+        st.json(config)
