@@ -32,14 +32,27 @@ def validate_config(config):
         "messages": [{"role": "user", "content": "Tell me a short joke."}],
         "stream": config["Streaming"]
     }
+
+    start_time = time.time()
+    stop_time = 0
+    first_chunk = True
     response = requests.post(
         config['APIUrl'], headers=headers, stream=config["Streaming"], json=data)
+
+    sseclient = sseclient.SSEClient(response)
+    for event in sseclient.events():
+        if first_chunk:
+            first_chunk = False
+            stop_time = time.time()
+            break
+
+    ttft = int((stop_time - start_time) * 1000)
 
     if response.status_code != 200:
         errors.append(
             f"请求失败: status_code={response.status_code} text={response.text}")
 
-    return errors
+    return errors, ttft
 
 
 st.title("LLMConfig 配置验证")
@@ -68,10 +81,11 @@ if st.button("验证配置"):
         }
     }
 
-    errors = validate_config(config["LLMConfig"])
+    errors, ttft = validate_config(config["LLMConfig"])
 
     if errors:
         st.error(f"配置无效: {errors}")
     else:
         st.success("配置有效")
+        st.success(f"首chunk耗时 TTFT: {ttft} 毫秒")
         st.json(config)
