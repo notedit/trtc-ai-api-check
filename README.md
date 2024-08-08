@@ -6,7 +6,7 @@
 
 我们提供了三个功能页面，来辅助你验证 TRTC Conversation AI 的配置：
 
-- **LLMConfig 配置验证**: 验证 OpenAI 的配置
+- **LLMConfig 配置验证**: 验证 LLM 的配置
 - **Minimax TTS 配置验证**: 验证 Minimax 的配置
 - **Tencent TTS 配置验证**: 验证 Tencent 的配置
 
