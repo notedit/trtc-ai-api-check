@@ -2,6 +2,11 @@
 import streamlit as st
 import json
 import requests
+import time
+
+import sseclient
+
+print(sseclient)
 
 
 def validate_config(config):
@@ -39,14 +44,16 @@ def validate_config(config):
     response = requests.post(
         config['APIUrl'], headers=headers, stream=config["Streaming"], json=data)
 
-    sseclient = sseclient.SSEClient(response)
-    for event in sseclient.events():
-        if first_chunk:
-            first_chunk = False
-            stop_time = time.time()
-            break
+    # sseclient = sseclient.SSEClient(response)
+    # for event in sseclient.events():
+    #     if first_chunk:
+    #         first_chunk = False
+    #         stop_time = time.time()
+    #         break
 
-    ttft = int((stop_time - start_time) * 1000)
+    # ttft = int((stop_time - start_time) * 1000)
+
+    ttft = 0
 
     if response.status_code != 200:
         errors.append(
