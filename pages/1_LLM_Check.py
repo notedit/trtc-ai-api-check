@@ -27,6 +27,7 @@ def validate_config(config):
         errors.append("Timeout 必须是一个数字")
 
     headers = {
+        "api-key": config["APIKey"],
         "Authorization": f"Bearer {config['APIKey']}",
         "Content-Type": "application/json",
         "Accept": "application/json",
