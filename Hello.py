@@ -16,12 +16,12 @@ def run():
 
     st.markdown(
         """
-        我们提供了多个功能页面，来辅助你验证TRTC Conversation AI的配置:
+        We provide multiple functional pages to help you validate TRTC Conversation AI configurations:
 
 
-        - **LLMConfig 配置验证**: 验证LLM的配置
-        - **Minimax TTS 配置验证**: 验证Minimax的配置
-        - **Tencent TTS 配置验证**: 验证Tencent的配置
+        - **LLMConfig Validation**: Validate LLM configurations
+        - **Minimax TTS Validation**: Validate Minimax configurations
+        - **Tencent TTS Validation**: Validate Tencent configurations
     """
     )
 

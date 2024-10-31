@@ -1,50 +1,49 @@
 # TRTC Conversation AI
 
-这是一个使用 Streamlit 构建的 TRTC Conversation AI 配置验证工具。
+This is a TRTC Conversation AI configuration validation tool built with Streamlit.
 
-## 功能
+## Features
 
-我们提供了三个功能页面，来辅助你验证 TRTC Conversation AI 的配置：
+We provide three functional pages to help you validate TRTC Conversation AI configurations:
 
-- **LLMConfig 配置验证**: 验证 LLM 的配置
-- **Minimax TTS 配置验证**: 验证 Minimax 的配置
-- **Tencent TTS 配置验证**: 验证 Tencent 的配置
+- **LLMConfig Validation**: Validate LLM configurations
+- **Minimax TTS Validation**: Validate Minimax configurations
+- **Tencent TTS Validation**: Validate Tencent configurations
 
-## 快速开始
+## Quick Start
 
-按照以下步骤来运行该项目：
+Follow these steps to run the project:
 
-### 1. 克隆仓库
+### 1. Clone the Repository
 
 ```bash
 git clone <your-repo-url>
 cd <your-repo-directory>
 ```
 
-### 2. 创建虚拟环境并激活
+### 2. Create and Activate Virtual Environment
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate  # 对于 Windows 用户，使用 `venv\Scripts\activate`
+source venv/bin/activate  # For Windows users, use `venv\Scripts\activate`
 ```
 
-### 3. 安装依赖
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. 运行应用
+### 4. Run the Application
 
 ```bash
 streamlit run Hello.py
 ```
 
+## Contributing
 
-## 贡献
+Contributions are welcome! Please fork this repository and submit a pull request.
 
-欢迎贡献代码！请 fork 本仓库并提交 pull request。
+## License
 
-## 许可证
-
-该项目使用 MIT 许可证。
+This project is licensed under the MIT License.
